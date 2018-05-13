@@ -105,6 +105,17 @@ public class Flight
 	   Sort the result by (f.airlineCompanyName, f.flightNum, f1.airlineCompanyName, f1.flightNum). */
 
     {
+        q.setClass(Flight.class);
+        q.declareParameters("String a1, String a2, int h1, int m1, int h2, int m2," +
+                " int connectionAtLeast, int connectionAtMost");
+        q.declareVariables("Flight f; Flight f1; Airport ca");
+        q.setFilter("f.origin=a1 && f.destination=ca && f.departTime.isInInterval(h1,m1,h2,m2) " +
+                "&& f1.origin=ca && f1.destination=a2 && " +
+                "(connectionAtMost-connectionAtLeast)=(f.arriveTime-f1.departTime)");
+        q.setOrdering("f.airlineCompanyName, f.flightNum, f1.airlineCompanyName, f1.flightNum");
+        Object[] args = new Object[]{"a1","a2",new Integer(h1),new Integer(m1), new Integer(h2),
+                new Integer(m2), new Integer(connectionAtLeast), new Integer(connectionAtMost)};
+       return (Collection<Object[]>) q.executeWithArray( args );
 
     }
 
@@ -118,6 +129,9 @@ public class Flight
 	   Sort the result by airlineCompanyName. */
 
     {
+        q.setClass(Flight.class);
+        q.declareVariables("String airlineCompanyName; int num");
+        q.setFilter(this.airlineCompanyName == airlineCompanyName );
 
     }
 }

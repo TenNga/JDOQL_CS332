@@ -10,11 +10,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://C:/Program Files/objectdb/bin" />
+          <root url="file://C:/Program Files/objectdb-2.7.5/bin" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://C:/Program Files/objectdb/bin" recursive="false" />
+        <jarDirectory url="file://C:/Program Files/objectdb-2.7.5/bin" recursive="false" />
       </library>
     </orderEntry>
   </component>
