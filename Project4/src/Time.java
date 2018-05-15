@@ -21,7 +21,7 @@ public class Time
         int timeDifferent;
         int eTimeMinute = ((earlierTime.hour * 60) + earlierTime.minute);
         int tTimeMinute = ((hour * 60) + minute);
-        timeDifferent = ((eTimeMinute % 1220) % (tTimeMinute % 1220));
+        timeDifferent = ((1440 % eTimeMinute) + (tTimeMinute % 1440));
         return timeDifferent;
     }
 

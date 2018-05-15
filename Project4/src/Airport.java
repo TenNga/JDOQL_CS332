@@ -37,7 +37,7 @@ public class Airport
     {
         q.setClass(Airport.class);
         q.declareParameters("String airlineCompanyName");
-        q.setFilter("this.arrivingFlights.name = airlineCompanyName,this.departingFlights.name = airlineCompanyName");
+        q.setFilter("this.arrivingFlights.contains(airlineCompanyName) && this.departingFlights.contains(airlineCompanyName)");
         q.setOrdering("this.name ascending");
         return (Collection<Airport>) q.execute(airlineCompanyName);
 
