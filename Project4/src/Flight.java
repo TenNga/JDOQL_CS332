@@ -44,10 +44,11 @@ public class Flight
 	   all flights departing from a1 and arriving to a2.
 	   Sort the result by (airlineCompanyName, flightNum). */
 
-    {
+        {
         q.setClass(Flight.class);
         q.declareParameters("String a1, String a2");
-        q.setFilter("this.origin = a1 && this.destination = a2");
+        q.declareVariables("Flight org");
+        q.setFilter("this.origin.name == a1 && this.destination.name == a2");
         q.setOrdering("this.airlineCompanyName ascending, this.flightNum ascending");
         return (Collection<Flight>) q.execute(a1,a2);
     }
@@ -61,7 +62,7 @@ public class Flight
     {
         q.setClass(Flight.class);
         q.declareParameters("String c1, String c2");
-        q.setFilter("this.origin.closeTo = c1 && this.destination.closeTo = c2");
+        q.setFilter("this.origin.closeTo.name == c1 && this.destination.closeTo.name == c2");
         q.setOrdering("this.airlineCompanyName ascending, this.flightNum ascending");
         return (Collection<Flight>) q.execute(c1,c2);
 
@@ -79,7 +80,8 @@ public class Flight
     {
         q.setClass(Flight.class);
         q.declareParameters("String a1, String a2, int h1, int m1, int h2, int m2");
-        q.setFilter("this.origin = a1 && this.destination = a2 && this.departTime.isInInterval(h1,m1,h2,m2)");
+        q.setFilter("this.origin.name == a1 && this.destination.name == a2 && " +
+                "this.departTime.isInInterval(h1,m1,h2,m2)");
         q.setOrdering("this.airlineCompanyName ascending, this.flightNum ascending");
         Object[] args = new Object[] { "a1","a2", new Integer(h1), new Integer(m1), new Integer(h2), new Integer(m2)};
         Collection<Flight> result = (Collection<Flight>) q.executeWithArray( args );
@@ -109,10 +111,11 @@ public class Flight
         q.declareParameters("String a1, String a2, int h1, int m1, int h2, int m2," +
                 " int connectionAtLeast, int connectionAtMost");
         q.declareVariables("Flight f; Flight f1; Airport ca");
-        q.setFilter("f.origin=a1 && f.destination==ca && f.departTime.isInInterval(h1,m1,h2,m2) " +
+        q.setFilter("f.origin==a1 && f.destination==ca && f.departTime.isInInterval(h1,m1,h2,m2) " +
                 "&& f1.origin==ca && f1.destination==a2 && " +
                 "(connectionAtMost-connectionAtLeast)==(f.departTime.differenceFrom(f1.arriveTime))" );
-       // q.setOrdering("f.airlineCompanyName, f.flightNum, f1.airlineCompanyName, f1.flightNum");
+       // q.setOrdering("this.airlineCompanyName, this.flightNum, destination.airlineCompanyName, " +
+           //     "destination.flightNum");
         Object[] args = new Object[]{"a1","a2",new Integer(h1),new Integer(m1), new Integer(h2),
                 new Integer(m2), new Integer(connectionAtLeast), new Integer(connectionAtMost)};
        return (Collection<Object[]>) q.executeWithArray( args );
