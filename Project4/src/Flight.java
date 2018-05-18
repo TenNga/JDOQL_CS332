@@ -28,7 +28,7 @@ public class Flight
 
     {
         Query q= pm.newQuery(Flight.class);
-       // q.setClass(Flight.class);
+        // q.setClass(Flight.class);
         q.declareParameters("String airCompanyName, String flightNum");
         q.setFilter("this.airlineCompanyName == airlineCompanyName && this.flightNum == flightNum");
 
@@ -44,7 +44,7 @@ public class Flight
 	   all flights departing from a1 and arriving to a2.
 	   Sort the result by (airlineCompanyName, flightNum). */
 
-        {
+    {
         q.setClass(Flight.class);
         q.declareParameters("String a1, String a2");
         q.declareVariables("Flight org");
@@ -83,7 +83,7 @@ public class Flight
         q.setFilter("this.origin.name == a1 && this.destination.name == a2 && " +
                 "this.departTime.isInInterval(h1,m1,h2,m2)");
         q.setOrdering("this.airlineCompanyName ascending, this.flightNum ascending");
-        Object[] args = new Object[] { "a1","a2", new Integer(h1), new Integer(m1), new Integer(h2), new Integer(m2)};
+        Object[] args = new Object[] { a1,a2, new Integer(h1), new Integer(m1), new Integer(h2), new Integer(m2)};
         Collection<Flight> result = (Collection<Flight>) q.executeWithArray( args );
         return result;
     }
@@ -95,14 +95,12 @@ public class Flight
 	/* Given airport names a1 and a2, times h1:m1 and h2:m2, and connection time lower and upper bounds in minutes,
 	   connectionAtLeast and connectionAtMost, the function returns the pairs of all flights f and f1 satisfying
 	   the following conditions:
-
 	   1. f departs from a1 and arrives to a connecting airport "ca" different from a2; and
 	   2. The departure time of f is h1:m1 at earliest and h2:m2 at latest; and
 	   3. There is a second flight f1 from "ca" to a2; and
-	   4. The connecting time, i.e. the time interval in minutes between 
+	   4. The connecting time, i.e. the time interval in minutes between
 	      the arrival time of f and the departure time of f1, is at least connectionAtLeast
-	      and at most connectionAtMost. 
-
+	      and at most connectionAtMost.
 	   Note again that the relevant time intervals may include midnight.
 	   Sort the result by (f.airlineCompanyName, f.flightNum, f1.airlineCompanyName, f1.flightNum). */
 
@@ -114,11 +112,11 @@ public class Flight
         q.setFilter("f.origin==a1 && f.destination==ca && f.departTime.isInInterval(h1,m1,h2,m2) " +
                 "&& f1.origin==ca && f1.destination==a2 && " +
                 "(connectionAtMost-connectionAtLeast)==(f.departTime.differenceFrom(f1.arriveTime))" );
-       // q.setOrdering("this.airlineCompanyName, this.flightNum, destination.airlineCompanyName, " +
-           //     "destination.flightNum");
+        // q.setOrdering("this.airlineCompanyName, this.flightNum, destination.airlineCompanyName, " +
+        //     "destination.flightNum");
         Object[] args = new Object[]{"a1","a2",new Integer(h1),new Integer(m1), new Integer(h2),
                 new Integer(m2), new Integer(connectionAtLeast), new Integer(connectionAtMost)};
-       return (Collection<Object[]>) q.executeWithArray( args );
+        return (Collection<Object[]>) q.executeWithArray( args );
 
     }
 
@@ -126,9 +124,7 @@ public class Flight
 
 	/* Group the flights by their airline company names.
 	   Then return the set of 2-tuples <airlineCompanyName: String, num: int> where:
-
 	   num = the total number of flights operated by airlineCompanyName
-
 	   Sort the result by airlineCompanyName. */
 
     {
